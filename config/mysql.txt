@@ -1,0 +1,2 @@
+Ìí¼ÓÍâ¼ü
+ALTER TABLE ly ADD FOREIGN KEY ly(sid) REFERENCES student(id)
