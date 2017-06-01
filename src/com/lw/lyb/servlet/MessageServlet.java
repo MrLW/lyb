@@ -11,16 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 import com.lw.lyb.bean.Message;
 import com.lw.lyb.bean.Student;
 import com.lw.lyb.service.MessageService;
+import com.lw.lyb.service.TitleService;
 import com.lw.lyb.service.impl.MessageServiceImpl;
+import com.lw.lyb.service.impl.TitleServiceImpl;
 
 /**
- * Servlet implementation class MessageServlet
+ *
  */
 public class MessageServlet extends BaseServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	private MessageService messageService = new MessageServiceImpl();
+	
+	
+	private TitleService titleService = new TitleServiceImpl();
 
 	public MessageServlet() {
 		super();
@@ -58,8 +63,12 @@ public class MessageServlet extends BaseServlet {
 			msg.setTitle(title);
 			msg.setSid(student.getId());
 			msg.setCreateTime(new Date());
-			
+			// 添加消息
 			messageService.addMessage(msg);
+			Integer count = titleService.getCountByTitleName(title);
+			count++;
+			// 添加选择标题的个数
+			titleService.addCountByName(title, count);
 			// 重定向到主页
 			response.sendRedirect(this.getServletContext().getContextPath() + "/IndexServlet");
 			

@@ -16,7 +16,7 @@ public class Page {
 
 	private Integer curPage = 1 ; // 当前页,默认为第一页
 
-	private Integer curCount = 2 ;// 每页显示记录数
+	private Integer curCount = 5 ;// 每页显示记录数
 	
 	private List<Message> messages ;
 

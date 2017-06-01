@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.lw.lyb.bean.Message;
 import com.lw.lyb.bean.Page;
+import com.lw.lyb.bean.TitlePojo;
 import com.lw.lyb.service.MessageService;
+import com.lw.lyb.service.TitleService;
 import com.lw.lyb.service.impl.MessageServiceImpl;
+import com.lw.lyb.service.impl.TitleServiceImpl;
 
 /**
  * 主页Servlet
@@ -26,21 +29,18 @@ public class IndexServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		int curPage = 1 ;
+		int curPage = 1;
 		try {
 			curPage = Integer.parseInt(request.getParameter("curPage"));
 		} catch (Exception e) {
-			curPage = 1 ;
+			curPage = 1;
 		}
-		// 查询所有留言信息
-		List<Message> messageList = messageService.getMessageList();
-		request.getSession().setAttribute("messageList", messageList);
-		
+
 		// 分页查询
 		Page page = messageService.getPage(curPage);
-		
+
 		request.getSession().setAttribute("page", page);
-		
+
 		response.sendRedirect(this.getServletContext().getContextPath() + "/index.jsp");
 	}
 

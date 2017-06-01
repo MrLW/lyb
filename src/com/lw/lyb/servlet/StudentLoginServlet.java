@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.lw.lyb.bean.Message;
 import com.lw.lyb.bean.Student;
@@ -22,6 +23,8 @@ public class StudentLoginServlet extends BaseServlet {
 
 	
 
+	private HttpSession session;
+
 	public StudentLoginServlet() {
 		super();
 	}
@@ -32,11 +35,14 @@ public class StudentLoginServlet extends BaseServlet {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		Student student = studentService.findByUserNameAndPassWord(username, password);
+		session = request.getSession();
 		if (student != null) {
 			// 登录成功,将当前信息存入session
-			request.getSession().setAttribute("student", student);
+			session.setAttribute("student", student);
 			// 清除未登陆信息
-			request.getSession().removeAttribute("noLogin");
+			if(session.getAttribute("noLogin") != null ){
+				session.removeAttribute("noLogin");
+			}
 			// 重定向到index.jsp
 			//System.out.println("1:" + this.getServletContext().getContextPath()); 当前项目路径
 			//System.out.println("2:" + this.getServletContext().getRealPath("/")); 真实当前硬盘路径
@@ -44,7 +50,7 @@ public class StudentLoginServlet extends BaseServlet {
 			response.sendRedirect(this.getServletContext().getContextPath() + "/IndexServlet");
 		}else {
 			// 登录失败,将错误信息存入session
-			request.getSession().setAttribute("error", "用户名/密码不正确");
+			session.setAttribute("error", "用户名/密码不正确");
 			response.sendRedirect(this.getServletContext().getContextPath() + "/login.jsp");
 		}
 	}
